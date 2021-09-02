@@ -6,7 +6,7 @@ import logging
 import uuid
 
 bot = commands.Bot(command_prefix = '$')
-token = "ODgzMDgzODY5MDA2NDkxNzE5.YTEx8Q.Riw0zg5PxxsItMPEKJNbEf16KDI" # Bot Token make ENV Variable 
+token = os.getenv("TOKEN")
 bot.remove_command('help')
 
 @bot.event
