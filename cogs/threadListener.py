@@ -1,7 +1,6 @@
 from discord.ext.commands import has_permissions
 from discord.ext import commands
 
-
 class ThreadListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
