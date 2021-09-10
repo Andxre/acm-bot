@@ -9,6 +9,6 @@ Fork the repo and submit a Pull Request to have your changes reviewed and added.
 ## How to Develop locally?
 1. Create a new discord bot through the [Discord Developer Portal](https://discord.com/developers/applications).
 2. Generate a bot token 
-3. Store the token as an Env Variable using `echo TOKEN={generated-bot-token}`
+3. Store the token as an Env Variable using `export TOKEN={generated-bot-token}`
 4. Run the bot (This bot requires [discord.py v2.0.0a](https://github.com/Rapptz/discord.py)) using `python3 main.py` 
 
