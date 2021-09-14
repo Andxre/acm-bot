@@ -50,8 +50,9 @@ class ProfanityListener(commands.Cog):
         await ctx.channel.send(message)
     
     def populateList(self):
-        # TODO: Pull from a json file
-        return {"fuck", "shit", "bitch"}
+        # TODO: Could pull a word list from a JSON file
+        return {"fuck", "shit", "bitch", "cocksucker", "piss", "tits", 
+                "motherfucker", "pussy"}
     
     def containsProfanity(self, message):
         for word in self.bannedWords:
