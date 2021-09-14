@@ -1,3 +1,4 @@
+from discord import MessageType
 from discord.ext.commands import has_permissions
 from discord.ext import commands
 
@@ -9,10 +10,14 @@ class ThreadListener(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
-        if (message.author != self.bot.user and message.content[0] != "$"):
-            if (message.channel.id in self.channels):
-                name = message.author.nick if message.author.nick != None else message.author.name
-                await message.create_thread(name = f"{name}'s thread")
+        try:
+            if (message.author != self.bot.user and
+                message.content[0] != "$"):
+                if (message.channel.id in self.channels):
+                    name = message.author.nick if message.author.nick != None else message.author.name
+                    await message.create_thread(name = f"{name}'s thread")
+        except:
+            pass
 
     @commands.command()
     @has_permissions(manage_roles=True, ban_members=True)

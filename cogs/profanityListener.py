@@ -1,3 +1,4 @@
+from discord import ChannelType
 from discord.ext import commands
 
 class ProfanityListener(commands.Cog):
@@ -6,24 +7,41 @@ class ProfanityListener(commands.Cog):
         self.bot = bot
         self.enabled = True
         self.bannedWords = self.populateList()
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        if (self.containsProfanity(after.content)):
+            await after.delete()
+            await after.channel.send(f"<@{after.author.id}>, please stop the profanity!")
     
     @commands.Cog.listener()
-    async def on_message(self, message):
-        if (self.enabled and 
-            self.containsProfanity(message.content) and 
-            message.webhook_id == None):
-            channel = self.bot.get_channel(message.channel.id)
-            webhook = await message.channel.create_webhook(name = 'deleteThis')
-            await message.delete()
-        
-            if (message.channel == channel):
-                await webhook.send(
-                    content = self.formatProfanity(message.content),
-                    username = message.author.display_name,
-                    avatar_url = message.author.avatar.url
-                )
+    async def on_thread_join(self, thread):
+        await thread.join()
 
-                await webhook.delete()
+    @commands.Cog.listener()
+    async def on_message(self, message):
+
+        if (self.enabled):
+
+            if (message.channel.type == ChannelType.public_thread):
+                if (self.containsProfanity(message.content)):
+                    await message.delete()
+                    await message.channel.send((f"<@{message.author.id}>, please stop the profanity!"))
+
+
+            elif (self.containsProfanity(message.content) and message.webhook_id == None):
+                channel = self.bot.get_channel(message.channel.id)
+                webhook = await message.channel.create_webhook(name = 'deleteThis')
+                await message.delete()
+            
+                if (message.channel == channel):
+                    await webhook.send(
+                        content = self.formatProfanity(message.content),
+                        username = message.author.display_name,
+                        avatar_url = message.author.avatar.url
+                    )
+
+                    await webhook.delete()
         
     @commands.command()
     async def toggleProfanity(self, ctx):
@@ -32,18 +50,18 @@ class ProfanityListener(commands.Cog):
         await ctx.channel.send(message)
     
     def populateList(self):
-        return {"profanity1", "profanity2"}
+        # TODO: Pull from a json file
+        return {"fuck", "shit", "bitch"}
     
     def containsProfanity(self, message):
         for word in self.bannedWords:
-            if word in message:
+            if word in message.lower():
                 return True
         return False
 
     def formatProfanity(self, message):
-        editedMsg = message
+        editedMsg = message.lower()
         split = editedMsg.split(" ")
-        # Ew Nested For Loop
         for splitWord in split:
             for word in self.bannedWords:
                 if (word in splitWord): 
