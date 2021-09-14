@@ -1,4 +1,4 @@
-from discord import ChannelType
+from discord import File, ChannelType
 from discord.ext import commands
 
 class ProfanityListener(commands.Cog):
@@ -7,12 +7,15 @@ class ProfanityListener(commands.Cog):
         self.bot = bot
         self.enabled = True
         self.bannedWords = self.populateList()
+        
+        with open('stop.jpg', 'rb') as f:
+            self.picture = File(f)
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if (self.containsProfanity(after.content)):
             await after.delete()
-            await after.channel.send(f"<@{after.author.id}>, please stop the profanity!")
+            await after.channel.send(f"<@{after.author.id}>, please stop the profanity!", file = self.picture)
     
     @commands.Cog.listener()
     async def on_thread_join(self, thread):
@@ -26,7 +29,7 @@ class ProfanityListener(commands.Cog):
             if (message.channel.type == ChannelType.public_thread):
                 if (self.containsProfanity(message.content)):
                     await message.delete()
-                    await message.channel.send((f"<@{message.author.id}>, please stop the profanity!"))
+                    await message.channel.send(f"<@{message.author.id}>, please stop the profanity!", file = self.picture)
 
 
             elif (self.containsProfanity(message.content) and message.webhook_id == None):
