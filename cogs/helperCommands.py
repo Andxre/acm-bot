@@ -36,6 +36,7 @@ class HelperCommands(commands.Cog):
     async def spam(self, ctx, user, times):
         if (int(times) > 20):
             await ctx.channel.send("Stop it fool")
+            return
         for i in range(int(times)):
             await ctx.channel.send(f'{user}')
             
