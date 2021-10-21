@@ -26,9 +26,19 @@ class HelperCommands(commands.Cog):
                     f.write(val)
 
         await ctx.author.send(file = discord.File("result.csv"))
+        await ctx.channel.send("DM sent.")
 
         os.remove("result.csv")
-
+    
+    
+    @commands.command()
+    @has_permissions(manage_roles=True, ban_members=True)
+    async def spam(self, ctx, user, times):
+        if (int(times) > 20):
+            await ctx.channel.send("Stop it fool")
+        for i in range(int(times)):
+            await ctx.channel.send(f'{user}')
+            
 
 def setup(bot):
     bot.add_cog(HelperCommands(bot))
