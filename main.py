@@ -3,7 +3,7 @@ from discord.ext.commands import has_permissions
 from discord.ext import commands
 import os
 
-bot = commands.Bot(command_prefix = '$')
+bot = commands.Bot(command_prefix = '$', intents=discord.Intents.default())
 token = os.getenv("TOKEN")
 bot.remove_command('help')
 

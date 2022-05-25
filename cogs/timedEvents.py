@@ -13,7 +13,7 @@ class TimedEvents(commands.Cog):
     @tasks.loop(minutes = 720)
     async def pingD(self):
         userId = 755682652698443907
-        channelId = 882336112050339890
+        channelId = 885016712381100063
         channel = self.bot.get_channel(channelId)
         msg = await channel.send(f'<@{userId}>')
         await msg.delete()
